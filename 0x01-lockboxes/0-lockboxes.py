@@ -20,8 +20,9 @@ def canUnlockAll(boxes):
 
     while keys:
         current_key = keys.pop()
-        visited.add(current_key)
-        keys.update(boxes[current_key])
-        keys -= visited
+        if current_key < len(boxes)
+            visited.add(current_key)
+            keys.update(boxes[current_key])
+            keys -= visited
 
     return len(visited) == len(boxes)
