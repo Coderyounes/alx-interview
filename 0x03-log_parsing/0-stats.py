@@ -45,6 +45,8 @@ try:
                 if count[key] > 0:
                     print("{}: {}".format(key, count[key]))
 except KeyboardInterrupt:
+    pass
+finally:
     print("File size: {}".format(count['File size']))
     for key in sorted(filter(lambda x: isinstance(x, int), count.keys())):
         if count[key] > 0:
