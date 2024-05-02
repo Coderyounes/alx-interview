@@ -40,8 +40,11 @@ def check_input(line):
     Returns:
         bool: True if the line matches the pattern, False otherwise.
     """
-    pattern = r'^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3} - ' \
-              r'\[.+\] "GET \/projects\/\d+ HTTP\/1\.1" \d+ \d+$'
+    pattern = (
+        r'^\s*(?P<ip>\S+)\s*-\s*\[(?P<date>\d+-\d+-\d+ \d+:\d+:\d+\.\d+)\]\s*'
+        r'"GET \/projects\/\d+ HTTP\/1\.1"\s*(?P<status_code>\S+)\s*'
+        r'(?P<file_size>\d+)'
+    )
     if re.match(pattern, line):
         return True
     else:
