@@ -31,7 +31,6 @@ def update_status(code: int) -> None:
 
 
 line_count = 0
-pattern = re.compile(r'^\S+ - \[\S+ \S+\] "GET /projects/260 HTTP/1\.1" (\d{3}) (\d+)$')
 
 try:
     for line in sys.stdin:
