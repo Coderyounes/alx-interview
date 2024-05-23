@@ -1,35 +1,32 @@
 #!/usr/bin/node
-
 const request = require('request');
 
-function getStarWarsCharacters (movieId) {
-  const filmUrl = `https://swapi.dev/api/films/${movieId}/`;
+const API_URL = 'https://swapi.dev/api';
 
-  request(filmUrl, { json: true }, (err, res, body) => {
+if (process.argv.length > 2) {
+  request(`${API_URL}/films/${process.argv[2]}/`, (err, _, body) => {
     if (err) {
-      return console.error('Error fetching film data:', err);
+      console.log(err);
+      return;
     }
 
-    if (body.characters) {
-      body.characters.forEach((characterUrl) => {
-        request(characterUrl, { json: true }, (err, res, character) => {
-          if (err) {
-            return console.error('Error fetching character data:', err);
+    const charactersURL = JSON.parse(body).characters;
+    const charactersName = charactersURL.map(
+      (url) => new Promise((resolve, reject) => {
+        request(url, (promiseErr, __, charactersReqBody) => {
+          if (promiseErr) {
+            reject(promiseErr);
+          } else {
+            resolve(JSON.parse(charactersReqBody).name);
           }
-          console.log(character.name);
         });
-      });
-    } else {
-      console.error('Invalid movie ID or no characters found.');
-    }
+      })
+    );
+
+    Promise.all(charactersName)
+      .then((names) => console.log(names.join('\n')))
+      .catch((allErr) => console.log(allErr));
   });
-}
-
-const movieId = process.argv[2];
-
-if (!movieId) {
+} else {
   console.error('Please provide a movie ID');
-  process.exit(1);
 }
-
-getStarWarsCharacters(movieId);
