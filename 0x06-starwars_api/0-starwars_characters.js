@@ -17,7 +17,7 @@ if (process.argv.length > 2) {
           }
           resolve(JSON.parse(charactersReqBody).name);
         });
-      }),
+      })
     );
 
     Promise.all(charactersName)
